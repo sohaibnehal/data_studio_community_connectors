@@ -23,7 +23,7 @@ function getConfig(request)
       },
       {
         "type": "SELECT_MULTIPLE",
-        "name": "INTERESTINGCURRENCIES",
+        "name": "INTERESTING_CURRENCIES",
         "displayName": "Select Currencies to compare:",
         "helpText": "Select the list of Currencies you want to compare.",
         "options" : [
@@ -89,7 +89,7 @@ var FixerIODataSchema = [
 function getSchema(request) 
 {
   var baseCurrency = request.configParams['BASE_CURRENCY'] || 'EUR';
-  var listOfCurrencies = request.configParams['INTERESTINGCURRENCIES'].split(',');
+  var listOfCurrencies = request.configParams['INTERESTING_CURRENCIES'].split(',');
 
   //Adjusting the schema as per the configurations set by user
   FixerIODataSchema =  FixerIODataSchema.map(function(i) {
