@@ -1,3 +1,7 @@
+//This connector uses API from Fixer.io (http://fixer.io/) to fetch exchange rates of different currencies. 
+//Rates are quoted against the Euro by default. Quote against a different currency by setting the Base Currency in your configuration while setting it up with Data Studio.
+
+
 function getConfig(request) 
 {
   var config = {
