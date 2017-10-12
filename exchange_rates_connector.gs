@@ -2,17 +2,39 @@
 //Rates are quoted against the Euro by default. Quote against a different currency by setting the Base Currency in 
 //your configuration while setting it up with Data Studio.
 
+
 function getConfig(request) 
 {
   var config = {
     "configParams": [
       {
-        "type": "TEXTAREA",
+        "type": "SELECT_SINGLE",
         "name": "BASE_CURRENCY",
-        "displayName": "Base Currency",
-        "helpText": "Enter the Base Currency for comparison (For eg: USD, EUR, AUD, etc.)",
-        "placeholder": "Enter the Base Currency for comparison (For eg: USD, EUR, AUD, etc.)",
-      }
+        "displayName": "Select Base Currency:",
+        "helpText": "Select the Base Currency for comparison.",
+        "options" : [
+          {label:'Australian Dollar', value:'AUD'},
+          {label:'Bulgarian Lev', value:'BGN'},
+          {label:'Canadian Dollar', value:'CAD'},
+          {label:'Swiss Franc', value:'CHF'},
+          {label:'Euro', value:'EUR'},
+          {label:'US Dollar', value:'USD'}
+        ]
+      },
+      {
+        "type": "SELECT_MULTIPLE",
+        "name": "INTERESTINGCURRENCIES",
+        "displayName": "Select Currencies to compare:",
+        "helpText": "Select the list of Currencies you want to compare.",
+        "options" : [
+          {label:'Australian Dollar', value:'AUD'},
+          {label:'Bulgarian Lev', value:'BGN'},
+          {label:'Canadian Dollar', value:'CAD'},
+          {label:'Swiss Franc', value:'CHF'},
+          {label:'Euro', value:'EUR'},
+          {label:'US Dollar', value:'USD'}
+        ]
+      } 
     ]
   };
   return config;
@@ -33,8 +55,20 @@ var FixerIODataSchema = [
     semantics: { conceptType: 'DIMENSION' }
   },
   {
+    name: 'BGN',
+    label: 'Bulgarian Lev ',
+    dataType: 'NUMBER',
+    semantics: { conceptType: 'DIMENSION' }
+  },
+  {
     name: 'CAD',
     label: 'Canadian Dollar',
+    dataType: 'NUMBER',
+    semantics: { conceptType: 'DIMENSION' }
+  },
+  {
+    name: 'CHF',
+    label: 'Swiss Franc',
     dataType: 'NUMBER',
     semantics: { conceptType: 'DIMENSION' }
   },
@@ -55,7 +89,8 @@ var FixerIODataSchema = [
 function getSchema(request) 
 {
   var baseCurrency = request.configParams['BASE_CURRENCY'] || 'EUR';
-  
+  var listOfCurrencies = request.configParams['INTERESTINGCURRENCIES'].split(',');
+
   //Adjusting the schema as per the configurations set by user
   FixerIODataSchema =  FixerIODataSchema.map(function(i) {
     if (i.name === baseCurrency) {
@@ -65,6 +100,13 @@ function getSchema(request)
       };
     }
     return i;
+  });
+  
+  // Filtering currencies picked by user using multi-select and base currency options
+  FixerIODataSchema =  FixerIODataSchema.filter(function(i) {
+    if (listOfCurrencies.indexOf(i.name) > -1 || i.name === baseCurrency) {
+        return i;
+    }
   });
   
   return {
@@ -121,9 +163,15 @@ function makeTabularData(responseData, schema, baseCurrency)
         case 'AUD':
           if (baseCurrency === 'AUD') return 1;
           else return rates['AUD'];
+        case 'BGN':
+          if (baseCurrency === 'BGN') return 1;
+          else return rates['BGN'];   
         case 'CAD':
           if (baseCurrency === 'CAD') return 1;
           else return rates['CAD'];
+        case 'CHF':
+          if (baseCurrency === 'CHF') return 1;
+          else return rates['CHF'];     
         case 'EUR':
           if (baseCurrency === 'EUR') return 1;
           else return rates['EUR'];
