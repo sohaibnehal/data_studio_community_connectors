@@ -1,6 +1,6 @@
 
-//This Google Data Studio Community Connector uses API from CoinDesk (https://www.coindesk.com/api/) to fetch Bitcoin 
-//Index Data.
+//This Google Data Studio Community Connector uses API from CoinDesk (https://www.coindesk.com/api/) to fetch 
+//Bitcoin Price Index Data for last 1 Year.
 //Rates are displayed in USD by default. Choose a different currency using your configuration while setting it up with 
 //Data Studio.
 
@@ -8,6 +8,11 @@
 function getConfig(request) {
     return {
         'configParams': [
+            {
+                type: 'INFO',
+                name: 'BPI',
+                text: 'This connector pulls data of Bitcoin Price Index for last 1 year. Rates are quoted in USD by default.'
+            },
             {
                 'type': 'SELECT_SINGLE',
                 'name': 'CURRENCY',
