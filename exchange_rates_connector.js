@@ -86,7 +86,7 @@ var FixerIODataSchema = [
         label: 'US Dollar',
         dataType: 'NUMBER',
         semantics: {conceptType: 'DIMENSION'}
-    },
+    }
 ];
 
 function getSchema(request) {
@@ -122,14 +122,12 @@ function getData(request) {
     // Prepare the schema for the fields requested.
     var dataSchema = [];
     dataSchema = request.fields.map(function (i) {
-        var item;
-        FixerIODataSchema.map(function (j) {
+        var item = FixerIODataSchema.filter (function (j) {
             if (i.name === j.name) {
-                item = j;
-                return;
+                return j;
             }
         });
-        return item;
+        return item[0];
     });
 
     // Fetch the data
