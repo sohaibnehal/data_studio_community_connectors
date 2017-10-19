@@ -62,15 +62,15 @@ function getData(request) {
     // Prepare the schema for the fields requested.
     var dataSchema = [];
     dataSchema = request.fields.map(function (i) {
-        var item;
-        BitCoinPriceIndexDataSchema.map(function (j) {
+        var item = BitCoinPriceIndexDataSchema.filter (function (j) {
             if (i.name === j.name) {
-                item = j;
-                return;
+                return j;
             }
         });
-        return item;
+        return item[0];
     });
+
+
 
     // Fetch the data
     var response = JSON.parse(makeRequest(currency)).bpi;
